@@ -1,1 +1,0 @@
-ALTER TABLE "repositories" ADD COLUMN "repo_url" text NOT NULL;

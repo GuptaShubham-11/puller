@@ -1,17 +1,33 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "eb5bd383-8848-4414-b88e-3e13177f86f4",
-  "prevIds": [
-    "685deacd-7485-47f9-9405-5f66274aad9a"
-  ],
+  "id": "82b74bc9-fb75-4f2e-818c-e81fd23c1347",
+  "prevIds": ["00000000-0000-0000-0000-000000000000"],
   "ddl": [
     {
-      "values": [
-        "github",
-        "google"
-      ],
+      "values": ["github", "google"],
       "name": "provider",
+      "entityType": "enums",
+      "schema": "public"
+    },
+    {
+      "values": ["user", "admin", "superadmin"],
+      "name": "role",
+      "entityType": "enums",
+      "schema": "public"
+    },
+    {
+      "values": [
+        "youtube",
+        "linkedin",
+        "twitter",
+        "friend",
+        "reddit",
+        "google",
+        "producthunt",
+        "other"
+      ],
+      "name": "waitlist_source",
       "entityType": "enums",
       "schema": "public"
     },
@@ -36,6 +52,12 @@
     {
       "isRlsEnabled": false,
       "name": "users",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "waitlist",
       "entityType": "tables",
       "schema": "public"
     },
@@ -339,6 +361,19 @@
       "table": "users"
     },
     {
+      "type": "role",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'user'",
+      "generated": null,
+      "identity": null,
+      "name": "role",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "users"
+    },
+    {
       "type": "text",
       "typeSchema": null,
       "notNull": true,
@@ -391,15 +426,115 @@
       "table": "users"
     },
     {
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "name": "id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "email",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "name",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist"
+    },
+    {
+      "type": "waitlist_source",
+      "typeSchema": "public",
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "source",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist"
+    },
+    {
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "name": "invited",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist"
+    },
+    {
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "name": "signed_up",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist"
+    },
+    {
+      "type": "timestamp",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist"
+    },
+    {
+      "type": "timestamp",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist"
+    },
+    {
       "nameExplicit": false,
-      "columns": [
-        "repository_id"
-      ],
+      "columns": ["repository_id"],
       "schemaTo": "public",
       "tableTo": "repositories",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
       "name": "release_drafts_repository_id_repositories_id_fkey",
@@ -409,14 +544,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "draft_id"
-      ],
+      "columns": ["draft_id"],
       "schemaTo": "public",
       "tableTo": "release_drafts",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
       "name": "releases_draft_id_release_drafts_id_fkey",
@@ -426,14 +557,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "user_id"
-      ],
+      "columns": ["user_id"],
       "schemaTo": "public",
       "tableTo": "users",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
       "name": "repositories_user_id_users_id_fkey",
@@ -442,9 +569,7 @@
       "table": "repositories"
     },
     {
-      "columns": [
-        "id"
-      ],
+      "columns": ["id"],
       "nameExplicit": false,
       "name": "release_drafts_pkey",
       "schema": "public",
@@ -452,9 +577,7 @@
       "entityType": "pks"
     },
     {
-      "columns": [
-        "id"
-      ],
+      "columns": ["id"],
       "nameExplicit": false,
       "name": "releases_pkey",
       "schema": "public",
@@ -462,9 +585,7 @@
       "entityType": "pks"
     },
     {
-      "columns": [
-        "id"
-      ],
+      "columns": ["id"],
       "nameExplicit": false,
       "name": "repositories_pkey",
       "schema": "public",
@@ -472,9 +593,7 @@
       "entityType": "pks"
     },
     {
-      "columns": [
-        "id"
-      ],
+      "columns": ["id"],
       "nameExplicit": false,
       "name": "users_pkey",
       "schema": "public",
@@ -482,14 +601,29 @@
       "entityType": "pks"
     },
     {
+      "columns": ["id"],
       "nameExplicit": false,
-      "columns": [
-        "email"
-      ],
+      "name": "waitlist_pkey",
+      "schema": "public",
+      "table": "waitlist",
+      "entityType": "pks"
+    },
+    {
+      "nameExplicit": false,
+      "columns": ["email"],
       "nullsNotDistinct": false,
       "name": "users_email_key",
       "schema": "public",
       "table": "users",
+      "entityType": "uniques"
+    },
+    {
+      "nameExplicit": false,
+      "columns": ["email"],
+      "nullsNotDistinct": false,
+      "name": "waitlist_email_key",
+      "schema": "public",
+      "table": "waitlist",
       "entityType": "uniques"
     }
   ],
