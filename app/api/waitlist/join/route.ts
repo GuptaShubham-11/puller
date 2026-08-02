@@ -24,11 +24,11 @@ export async function POST(request: NextRequest) {
     // 1. Check if already joined
     const existing = await db.select().from(waitlist).where(eq(waitlist.email, email));
 
-    if (existing) {
+    if (existing.length > 0) {
       return NextResponse.json(
         {
           success: false,
-          message: "You're already on the waitlist.",
+          error: "You're already on the waitlist.",
         },
         { status: 409 }
       );
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
-  } catch (error) {
+  } catch {
     // console.error("Join waitlist error:", error);
     return NextResponse.json(
       {

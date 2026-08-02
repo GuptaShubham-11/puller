@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { eq, count } from 'drizzle-orm';
+import { count } from 'drizzle-orm';
 
 import { authOptions } from '@/lib/auth';
 import { db } from '@/lib/database';
-import { users, waitlist } from '@/lib/database/schema';
+import { waitlist } from '@/lib/database/schema';
 
 export async function GET(req: NextRequest) {
   try {
@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       {
         success: false,
